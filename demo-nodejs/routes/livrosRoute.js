@@ -1,5 +1,23 @@
 import express from "express"; 
 import livros from "../data/livros.json"; 
+import mongoose from "mongoose";
+
+const DB_URL = "mongodb+srv://admin:admin@cluster0.wlho3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+
+mongoose.connect(DB_URL, {useUnifiedTopology: true, useNewUrlParser: true });
+const db = mongoose.connection; 
+
+db.once("open", () => {
+    console.log("Conexão aberta no MongoDB");
+});
+
+const livrosSchema = mongoose.Schema({
+    _id: mongoose.Schema.Types.ObjectId,
+    titulo: String, 
+    tipo: String
+});
+
+const livrosModel = mongoose.model("Livro", livrosSchema); 
 
 const router = express.Router(); 
 
