@@ -1,5 +1,6 @@
 import express from "express"; 
 import livros from "./data/livros.json"
+import livrosRoute from "./routes/livrosRoute.js"
 
 const PORT = 3000;
 const server = express(); 
@@ -7,34 +8,7 @@ const server = express();
 const criarUrl = (version, path) => `/api/${version}/${path}`;
 const LIVROS_URL = criarUrl('v1', 'livros');
 
-server.get(LIVROS_URL, (req, res) => {
-    res.json(livros); 
-});
-
-server.get(`${LIVROS_URL}/:id`, (req, res) => {
-    const livro = livros.find(value => value.id == req.params.id); 
-    if (livro) { 
-        res.json(livro); 
-    } else { 
-        res.send('Livro não encontrado'); 
-    }
-    res.end(); 
-})
-
-server.post(LIVROS_URL, (req, res) => {
-    console.log('tratando metodo post'); 
-    res.end(); 
-});
-
-server.put(LIVROS_URL, (req, res) => {
-    console.log('tratando metodo put'); 
-    res.end(); 
-});
-
-server.delete(LIVROS_URL, (req, res) => {
-    console.log('tratando metodo delete'); 
-    res.end(); 
-});
+server.use(LIVROS_URL, livrosRoute); 
 
 //Router Handler
 server.get("/manipulando-rota", (req, res, next) => { 
